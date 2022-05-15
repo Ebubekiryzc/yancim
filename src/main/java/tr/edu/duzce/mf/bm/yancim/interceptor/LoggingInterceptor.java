@@ -3,6 +3,7 @@ package tr.edu.duzce.mf.bm.yancim.interceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.writer.ResponseWriter;

@@ -66,9 +66,12 @@ public class JJWTTokenHelper implements JWTHelper {
     }
 
     public CustomClaim verify(String authorization) {
+        // Bearer abuksubukyazı
         authorization = authorization.split("Bearer ")[1];
         try {
             Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authorization).getBody();
+
+            // username, roles
 
             CustomClaim customClaim = new CustomClaim();
             customClaim.setUsername(claims.get("username").toString());

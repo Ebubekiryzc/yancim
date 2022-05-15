@@ -116,8 +116,8 @@ public class RoomManager implements RoomService {
         // UPDATE
         else {
             message = messageSource.getMessage("rooms.update", null, locale);
-            Result isOwner = isOwnerFromDTO(locale, roomDTO);
-            Result isAdmin = isOperatorAnAdmin(locale, operatorResult.getData());
+            Result isOwner = isOwnerFromDTO(locale, roomDTO); //true
+            Result isAdmin = isOperatorAnAdmin(locale, operatorResult.getData()); //false
 
             if (isOwner.isSuccess() || isAdmin.isSuccess()) {
 

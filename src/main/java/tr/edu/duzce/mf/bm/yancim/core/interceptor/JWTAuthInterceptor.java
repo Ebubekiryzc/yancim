@@ -36,6 +36,7 @@ public class JWTAuthInterceptor implements HandlerInterceptor {
             List<String> roles = Arrays.asList(method.getAnnotation(RolesAllowed.class).value());
 
             String auth = request.getHeader(HttpHeaders.AUTHORIZATION);
+            // Bearer abuksubukyazı
             if (auth == null)
                 throw new NotAllowedException();
 

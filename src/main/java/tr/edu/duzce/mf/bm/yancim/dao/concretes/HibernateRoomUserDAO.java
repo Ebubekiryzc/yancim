@@ -29,6 +29,8 @@ public class HibernateRoomUserDAO extends HibernateMainDAO<RoomUser> implements 
 
         Root<RoomUser> roomUserRoot = criteriaQuery.from(RoomUser.class);
 
+        // select * from room_users where user_id=userId and room_id=roomId
+
         Predicate userPredicate = criteriaBuilder.equal(roomUserRoot.get("user").get("id"), userId);
         Predicate roomPredicate = criteriaBuilder.equal(roomUserRoot.get("room").get("id"), roomId);
 

@@ -48,7 +48,6 @@ public class OperationClaimManager implements OperationClaimService {
 
     @Override
     public DataResult<JSONArray> loadObjectsByUserId(Locale locale, Long userId) {
-        System.out.println("SELAM");
         DataResult<List<OperationClaim>> operationClaims = operationClaimDAO.loadObjectsByUserId(userId);
         DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
