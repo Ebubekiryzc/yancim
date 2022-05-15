@@ -98,7 +98,7 @@ public class HibernateMainDAO<TEntity> implements MainDAO<TEntity> {
         CriteriaQuery<TEntity> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<TEntity> root = criteriaQuery.from(entityClass);
         Predicate predicate = criteriaBuilder.equal(criteriaBuilder.lower(root.<String>get(parameter)), value.toLowerCase(new Locale("tr", "TR")));
-        criteriaQuery.select(root).where(predicate);
+        criteriaQuery.select(root).where(predicate).distinct(true);
 
         Query<TEntity> query = currentSession.createQuery(criteriaQuery);
         TEntity entity;

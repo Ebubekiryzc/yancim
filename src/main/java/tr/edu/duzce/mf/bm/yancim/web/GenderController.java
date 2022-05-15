@@ -36,7 +36,7 @@ public class GenderController {
     }
 
     @PostMapping(value = "/save_or_update")
-    @RolesAllowed(value = {"admin"})
+    @PermitAll
     public @ResponseBody String saveOrUpdate(Locale locale, @RequestBody Gender gender) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", genderService.saveOrUpdate(locale, gender));
@@ -44,7 +44,7 @@ public class GenderController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    @RolesAllowed(value = {"admin"})
+    @PermitAll
     public @ResponseBody String delete(Locale locale, @PathVariable("id") Long id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", genderService.delete(locale, id));

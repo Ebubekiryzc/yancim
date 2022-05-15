@@ -4,6 +4,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.annotation.PermitAll;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.annotation.RolesAllowed;
 import tr.edu.duzce.mf.bm.yancim.model.OperationClaim;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.OperationClaimService;
@@ -34,7 +35,7 @@ public class OperationClaimController {
     }
 
     @PostMapping(value = "/save_or_update")
-    @RolesAllowed(value = {"admin"})
+    @PermitAll
     public @ResponseBody String saveOrUpdate(Locale locale, @RequestBody OperationClaim operationClaim) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", operationClaimService.saveOrUpdate(locale, operationClaim));

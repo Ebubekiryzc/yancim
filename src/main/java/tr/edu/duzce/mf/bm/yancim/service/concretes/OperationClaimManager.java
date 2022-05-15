@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.dao.abstracts.OperationClaimDAO;
 import tr.edu.duzce.mf.bm.yancim.model.OperationClaim;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.OperationClaimService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +30,9 @@ public class OperationClaimManager implements OperationClaimService {
     @Override
     public DataResult<JSONArray> loadAll(Locale locale, Integer start, Integer limit) {
         List<OperationClaim> operationClaims = operationClaimDAO.loadAllObjects(start, limit);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(operationClaims, jsonConfig);
 
@@ -44,8 +48,11 @@ public class OperationClaimManager implements OperationClaimService {
 
     @Override
     public DataResult<JSONArray> loadObjectsByUserId(Locale locale, Long userId) {
+        System.out.println("SELAM");
         DataResult<List<OperationClaim>> operationClaims = operationClaimDAO.loadObjectsByUserId(userId);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(operationClaims.getData(), jsonConfig);
 
@@ -61,8 +68,6 @@ public class OperationClaimManager implements OperationClaimService {
     @Override
     public DataResult<JSONObject> loadObjectByName(Locale locale, String name) {
         DataResult<OperationClaim> claimDataResult = operationClaimDAO.loadObjectByName(name);
-        if (!claimDataResult.isSuccess())
-            return new ErrorDataResult<>(messageSource.getMessage("operationClaims.notFound", null, locale));
         return checkIfNull(locale, claimDataResult.getData());
     }
 
@@ -104,7 +109,9 @@ public class OperationClaimManager implements OperationClaimService {
         if (operationClaim == null)
             return new ErrorDataResult<>(messageSource.getMessage("operationClaims.notFound", null, locale));
         else {
+            DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
             JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.registerJsonValueProcessor(Date.class, processor);
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(operationClaim, jsonConfig);
             jsonObject.remove("userOperationClaims");

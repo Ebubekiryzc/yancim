@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.security.helper.jwt.abstracts.JWTHelper;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.security.helper.jwt.classes.AccessToken;
@@ -23,6 +24,7 @@ import tr.edu.duzce.mf.bm.yancim.service.abstracts.OperationClaimService;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.UserService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -80,7 +82,9 @@ public class UserManager implements UserService {
     @Override
     public DataResult<JSONArray> loadAll(Locale locale, Integer start, Integer limit) {
         List<User> users = userDAO.loadAllObjects(start, limit);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(users, jsonConfig);
 
@@ -169,7 +173,9 @@ public class UserManager implements UserService {
     private DataResult<JSONObject> checkIfNull(Locale locale, User user) {
         if (user == null) return new ErrorDataResult<>(messageSource.getMessage("users.notFound", null, locale));
         else {
+            DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
             JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.registerJsonValueProcessor(Date.class, processor);
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(user, jsonConfig);
             jsonObject.remove("password");

@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.business.BusinessRules;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.dao.abstracts.UserOperationClaimDAO;
 import tr.edu.duzce.mf.bm.yancim.model.OperationClaim;
@@ -19,6 +20,7 @@ import tr.edu.duzce.mf.bm.yancim.service.abstracts.OperationClaimService;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.UserOperationClaimService;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.UserService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,7 +44,9 @@ public class UserOperationClaimManager implements UserOperationClaimService {
     @Override
     public DataResult<JSONArray> loadAll(Locale locale, Integer start, Integer limit) {
         List<UserOperationClaim> userOperationClaims = userOperationClaimDAO.loadAllObjects(start, limit);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(userOperationClaims, jsonConfig);
 
@@ -122,7 +126,9 @@ public class UserOperationClaimManager implements UserOperationClaimService {
         if (userOperationClaim == null)
             return new ErrorDataResult<>(messageSource.getMessage("userOperationClaims.notFound", null, locale));
         else {
+            DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
             JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.registerJsonValueProcessor(Date.class, processor);
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(userOperationClaim, jsonConfig);
 

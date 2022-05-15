@@ -19,7 +19,7 @@ public class Room {
     private Long id;
 
     @Column(name = "max_player_count", nullable = false)
-    private String maxPlayerCount;
+    private Long maxPlayerCount;
 
     @Column(name = "address_details", nullable = false)
     private String addressDetails;

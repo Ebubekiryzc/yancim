@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.dao.abstracts.GenderDAO;
 import tr.edu.duzce.mf.bm.yancim.model.Gender;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.GenderService;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -26,7 +28,9 @@ public class GenderManager implements GenderService {
     @Override
     public DataResult<JSONArray> loadAll(Locale locale, Integer start, Integer limit) {
         List<Gender> genders = genderDAO.loadAllObjects(start, limit);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(genders, jsonConfig);
 
@@ -81,7 +85,9 @@ public class GenderManager implements GenderService {
     private DataResult<JSONObject> checkIfNull(Locale locale, Gender gender) {
         if (gender == null) return new ErrorDataResult<>(messageSource.getMessage("genders.notFound", null, locale));
         else {
+            DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
             JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.registerJsonValueProcessor(Date.class, processor);
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(gender, jsonConfig);
             jsonObject.remove("users");

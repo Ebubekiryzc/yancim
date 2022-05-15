@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.dao.abstracts.CityDAO;
 import tr.edu.duzce.mf.bm.yancim.model.City;
@@ -15,6 +16,7 @@ import tr.edu.duzce.mf.bm.yancim.model.Room;
 import tr.edu.duzce.mf.bm.yancim.service.abstracts.CityService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,7 +33,9 @@ public class CityManager implements CityService {
     @Override
     public DataResult<JSONArray> loadAll(Locale locale, Integer start, Integer limit) {
         List<City> cities = cityDAO.loadAllObjects(start, limit);
+        DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
         JsonConfig jsonConfig = new JsonConfig();
+        jsonConfig.registerJsonValueProcessor(Date.class, processor);
         jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
         JSONArray jsonArray = JSONArray.fromObject(cities, jsonConfig);
 
@@ -95,7 +99,9 @@ public class CityManager implements CityService {
         if (city == null)
             return new ErrorDataResult<>(messageSource.getMessage("cities.notFound", null, locale));
         else {
+            DateJSONValueProcessor processor = new DateJSONValueProcessor("dd/MM/yyyy HH:mm");
             JsonConfig jsonConfig = new JsonConfig();
+            jsonConfig.registerJsonValueProcessor(Date.class, processor);
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(city, jsonConfig);
             List<Long> roomIds = new ArrayList<>();

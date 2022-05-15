@@ -5,7 +5,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
-import tr.edu.duzce.mf.bm.yancim.core.utilities.filter.RequestFilter;
+import tr.edu.duzce.mf.bm.yancim.core.utilities.filter.RequestCachingFilter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
@@ -27,7 +27,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
         characterEncodingFilter.setForceEncoding(true);
         servletContext.addFilter("characterEncodingFilter",
                 characterEncodingFilter).addMappingForUrlPatterns(null, false, "/*");
-        servletContext.addFilter("requestFilter", new RequestFilter()).addMappingForUrlPatterns(null, false, "/*");
+        servletContext.addFilter("requestCachingFilter", new RequestCachingFilter()).addMappingForUrlPatterns(null, false, "/*");
     }
 
     private AnnotationConfigWebApplicationContext getContext() {
