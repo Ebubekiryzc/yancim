@@ -60,16 +60,6 @@ public class RoomManager implements RoomService {
             Room room = rooms.get(i);
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             jsonObject.put("gameType", room.getGameType().getName());
-
-            List<Long> userIds = new ArrayList<>();
-
-            for (RoomUser roomUser : room.getRoomUsers()) {
-                userIds.add(roomUser.getUser().getId());
-            }
-
-            JSONArray userArray = JSONArray.fromObject(userIds);
-            jsonObject.put("users", userArray);
-
             jsonObject.put("city", room.getCity().getName());
         }
         Long totalCount = roomDAO.getTotalCount();
@@ -174,18 +164,6 @@ public class RoomManager implements RoomService {
             jsonConfig.setCycleDetectionStrategy(CycleDetectionStrategy.LENIENT);
             JSONObject jsonObject = JSONObject.fromObject(room, jsonConfig);
             jsonObject.put("gameType", room.getGameType().getName());
-
-            List<Long> userIds = new ArrayList<>();
-
-            if (room.getRoomUsers() != null) {
-                for (RoomUser roomUser : room.getRoomUsers()) {
-                    userIds.add(roomUser.getUser().getId());
-                }
-            }
-
-            JSONArray roomArray = JSONArray.fromObject(userIds);
-            jsonObject.put("users", roomArray);
-
             jsonObject.put("city", room.getCity().getName());
 
             return new SuccessDataResult<>(messageSource.getMessage("rooms.getSingleResult", null, locale), jsonObject, 1L);

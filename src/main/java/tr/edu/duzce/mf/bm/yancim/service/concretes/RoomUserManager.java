@@ -7,6 +7,7 @@ import net.sf.json.util.CycleDetectionStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.helper.converter.DateJSONValueProcessor;
 import tr.edu.duzce.mf.bm.yancim.core.utilities.result.*;
 import tr.edu.duzce.mf.bm.yancim.dao.abstracts.RoomUserDAO;
@@ -54,6 +55,7 @@ public class RoomUserManager implements RoomUserService {
     }
 
     @Override
+    @Transactional
     public DataResult<Long> saveOrUpdate(Locale locale, RoomUser roomUser) {
         RoomUser roomUserToSave = roomUserDAO.loadObjectById(roomUser.getId());
         String message;
@@ -75,6 +77,7 @@ public class RoomUserManager implements RoomUserService {
 
 
     @Override
+    @Transactional
     public Result delete(Locale locale, Long id) {
         RoomUser roomUserToRemove = roomUserDAO.loadObjectById(id);
         if (!roomUserDAO.removeObject(roomUserToRemove)) {

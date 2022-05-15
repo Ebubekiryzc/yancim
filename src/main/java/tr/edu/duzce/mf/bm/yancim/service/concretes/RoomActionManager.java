@@ -54,8 +54,8 @@ public class RoomActionManager implements RoomActionService {
         roomUser.setOperationClaim(operationClaim);
         Result result = roomUserService.saveOrUpdate(locale, roomUser);
         if (!result.isSuccess())
-            return new ErrorResult(messageSource.getMessage("roomUsers.saveCompleted", null, locale));
-        return new SuccessResult(messageSource.getMessage("roomUsers.saveHasError", null, locale));
+            return new ErrorResult(messageSource.getMessage("roomUsers.saveHasError", null, locale));
+        return new SuccessResult(messageSource.getMessage("roomUsers.saveCompleted", null, locale));
     }
 
     @Override
